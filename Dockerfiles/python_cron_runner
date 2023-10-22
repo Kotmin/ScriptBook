@@ -1,0 +1,17 @@
+# Use a lightweight base image
+FROM python:3.9-slim
+
+# Set the working directory
+WORKDIR /app
+
+# Copy your Python script to the container
+COPY open_website.py .
+
+# Install the required libraries
+RUN pip install requests
+
+# Add a cron job schedule
+RUN echo "*/5 8-23 * * * /usr/local/bin/python /app/open_website.py" > /etc/crontab
+
+# Start the cron service
+CMD ["cron", "-f"]
